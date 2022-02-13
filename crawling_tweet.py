@@ -16,10 +16,10 @@ import ast
 #used after some modification 
 
 #Twitter credentials for the app
-consumer_key = '6qXA2fmtgpN68yQSy3IzLUPs6'
-consumer_secret = '0TEL9W6Eh3Dumx54zAdDWj2lA2i88ookST5jucs0ZOpQmwAb6m'
-access_token = '563053721-yCvEBd3vxKWjxqNeJnQ4dRpMw3nEiPX1kfMbny5r'
-access_token_secret = 'R99YPN00JTRZF7hNEnH9SkjoDJRn4UhGawdibX0cy1RGq'
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
 
 #pass twitter credentials to tweepy
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
