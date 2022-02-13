@@ -6,8 +6,11 @@ This is a project to analyze sentiments from Indonesian people related to limite
 ###############################################
 
 use crawling_tweet.py and set the keyword to collect tweet from twitter
+
 use text-preprocesiing.py to clean the text data
+
 use edit_distance.py to normalize the miss-typing (typo) text
+
 use SentimenAnalysis.py to start analyze
 
 ##############################################
