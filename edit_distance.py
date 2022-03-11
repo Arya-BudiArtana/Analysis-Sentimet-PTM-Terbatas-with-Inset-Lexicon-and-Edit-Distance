@@ -49,5 +49,5 @@ for dirname, _, filenames in os.walk('D:/Kuliah/KRISPI/py/Analisis'):
 # print(df['Perbaikan'].head(5))
 # print('\n\n\n')
 # df.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/data_extraction/tweet_dataset_edited2.csv")
- 
-print(spelling_correction('yolahh gue seneng pjj lagi tpi ptm lebih seruu rasanya'))
+
+print(spelling_correction("tpi"))

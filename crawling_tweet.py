@@ -11,15 +11,11 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import ast
 
-#the code here is based on the reference below, after some modification and combine improvement from various other sources
-#references : https://towardsdatascience.com/extracting-twitter-data-pre-processing-and-sentiment-analysis-using-python-3-0-7192bd8b47cf
-#used after some modification 
-
 #Twitter credentials for the app
-consumer_key = ''
-consumer_secret = ''
-access_token = ''
-access_token_secret = ''
+consumer_key = '6qXA2fmtgpN68yQSy3IzLUPs6'
+consumer_secret = '0TEL9W6Eh3Dumx54zAdDWj2lA2i88ookST5jucs0ZOpQmwAb6m'
+access_token = '563053721-yCvEBd3vxKWjxqNeJnQ4dRpMw3nEiPX1kfMbny5r'
+access_token_secret = 'R99YPN00JTRZF7hNEnH9SkjoDJRn4UhGawdibX0cy1RGq'
 
 #pass twitter credentials to tweepy
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -198,7 +194,7 @@ def write_tweets(keyword, file):
     df.to_csv(csvFile, mode='a', columns=COLS, index=False, encoding="utf-8")
 
 #declare keywords as a query for three categories
-ptm_terbatas_keywords = '#PTM OR ((sekolah tatap muka OR gak siap ptm OR pjj lagi) AND (anak ptm OR sekolah ptm OR sekolah offline)) OR PTM'
+ptm_terbatas_keywords = '#PTM OR ((sekolah tatap muka OR #ptmterbatas) AND (ptm terbatas OR sekolah offline)) OR PTM'
 
 #call main method passing keywords and file path
 

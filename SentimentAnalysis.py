@@ -9,17 +9,23 @@ import operator
 from nltk.corpus import stopwords
 import concurrent.futures
 from wordcloud import WordCloud
-# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 sentimentDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetAnalysis/lexicon-word-dataset.csv')
-kataPenguatFile = pandas.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetAnalysis/kata-keterangan-penguat.csv")
 negasi = ["tidak", "tidaklah", "bukan", "bukanlah", "bukannya","ngga", "nggak", "enggak", "nggaknya", 
-    "kagak", "gak"]
-# stemmer = StemmerFactory().create_stemmer()
+    "kagak", "gak", "ga"]
+list_stopwords = ["yang", "dengan", "kan", "nya", 'juga', 'ke', 'bikin', 'bilang', 'ingin', 'bisa','gimana', 'harus',
+                'nya', 'nih', 'sih', 'kakak', 'terus', 'juga', 'demi', 'lah', 'luar', 'waktu', 'terus', 'pun', 'kenapa',
+                'si', 'tuh', 'untuk', 'n', 'tt', 'daripada', 'mana', 'tuh', 'siapa', 'tadi', 'pak', 'tanpa', 'atau', 'di',
+                'hehe', 'u', 'ni', 'loh', 'tu', 'bahkan', 'masi', 'masih', 'dulu', 'kali', 'nah', 'ni', 'gasi',
+               '&amp', 'nih', 'seminggu', 'itupun', 'bawah', 'lu', 'gimana', 'bulan','yah',
+               'ka', 'tapi', 'pas', 'saat', 'satu', 'minggu', 'hari', 'orang', 'pada', 'ini','itu', 'hanya', 'akan', 'sini','sana'
+              'atau','dan', 'apa', 'loh', 'nggak', 'lo', 'kapan', 'untuk', 'akhir', 'baru', 'apalagi', 'kok', 'bagaimana', 'gimana',
+             'gapapa','senin', 'selasa', 'rabu', 'kamis', 'jumat', 'sabtu', 'minggu', 'akan', 'depan',
+            'hari', 'tahun','ku', 'mu', 'dia', 'anda', 'kamu', 'mereka', 'kita', 'kami', 'gitu', 'gini', 'padahal', 'siang']
+
 
 preprocessingTweet = lambda wordTweets : filterfalse(lambda x: 
-    True if (x in stopwords.words('english') 
-        and x not in (x for x in kataPenguatFile['words']) 
+    True if (x in stopwords.words('english') and x in list_stopwords
             and x not in negasi)         
         else False, wordTweets.split()) # -> itertools.filterfalse()
 
@@ -30,13 +36,6 @@ def findWeightSentiment(wordTweet:str) -> int:
             return next(islice((x for x in sentimentDataset['weight']), x, None))
     return 0
 
-@lru_cache(maxsize=30)
-def findWeightInf(wordTweet:str) -> float:
-    for x, i in enumerate(x for x in kataPenguatFile['words']):
-        if i == wordTweet:
-            return next(islice((x for x in kataPenguatFile['weight']), x, None))
-    return 0
-
 def sentimentFinder(wordTweets:str, preprocessingFunc) -> list:    
     cleanText = (" ".join([x for x in preprocessingFunc(wordTweets)]))
     sentimentWeightList = []
@@ -44,9 +43,7 @@ def sentimentFinder(wordTweets:str, preprocessingFunc) -> list:
     wordTweets = [x for x in cleanText.split()]
     for x in wordTweets:
         if (wordTweets[wordTweets.index(x) - 1]) in negasi:
-            sentimentWeightList.append(-1*findWeightSentiment(x))
-        elif x in (x for x in kataPenguatFile['words']):
-            sentimentInfList.append(findWeightInf(x))    
+            sentimentWeightList.append(-1*findWeightSentiment(x))  
         else: 
             sentimentWeightList.append(findWeightSentiment(x))        
     return sentimentWeightList, sentimentInfList
@@ -61,16 +58,14 @@ def sentimentCalc(args) -> float:
     else:
         return 0
 
-sentimentProcess = lambda dataset : (dict(original_tweet=x, sentiment_result=sentimentCalc(sentimentFinder(x, preprocessingTweet))) 
+sentimentProcess = lambda dataset : (dict(clean_tweet=x, sentiment_result=sentimentCalc(sentimentFinder(x, preprocessingTweet))) 
     for x in dataset)
 
 def sentimentCSV(fileName:str) -> csv:    
     tweetDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-{}.csv'.format(fileName))
-    # tweetDataset = tweetDataset.drop_duplicates(subset=['tweet'])
-    # tweetDataset = tweetDataset.reset_index(drop=True)
 
     with open('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-{}.csv'.format(fileName),'w') as file:
-        writer = csv.DictWriter(file, ["original_tweet", "sentiment_result"])
+        writer = csv.DictWriter(file, ["clean_tweet", "sentiment_result"])
         writer.writeheader()
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(writer.writerow, sentimentProcess(tweetDataset['tweet']))
@@ -85,7 +80,7 @@ def sentimentPlotSingleFile(fileName:str) -> plt:
 def sentimentWordCloud(fileName:str) -> plt:
     datasetResult = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-{}.csv'.format(fileName))
     wordcloud = WordCloud(width = 800, height = 800, background_color = 'black', max_words = 1000
-                      , min_font_size = 20).generate(str(datasetResult['original_tweet']))
+                      , min_font_size = 20).generate(str(datasetResult['clean_tweet']))
     plt.figure(figsize = (8,8), facecolor = None)
     plt.imshow(wordcloud)
     plt.axis('off')
@@ -94,12 +89,20 @@ def sentimentWordCloud(fileName:str) -> plt:
 if __name__ == "__main__":
     # nama file untuk hasil sentiment analysis    
     time1 = time.perf_counter()
-    sentimentCSV("november")
+    sentimentCSV("full")
     time2 = time.perf_counter()
     print(f"waktu : {time2-time1}")
     print(findWeightSentiment.cache_info())
-    # print(findWeightInf.cache_info())
 
     # grafik untuk distribusi sentiment
-    sentimentPlotSingleFile("november")
-    sentimentWordCloud("november")
+    sentimentPlotSingleFile("full")
+    sentimentWordCloud("full")
+
+tweetDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-full.csv')
+result = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-full.csv')
+final_result = pandas.DataFrame([])
+
+final_result['original_tweet'] = tweetDataset['original_tweet'].copy()
+final_result['sentiment']  = result['sentiment_result'].copy()
+final_result.head(10)
+final_result.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/sentimentAnalysis-result-ptm-final.csv")
