@@ -14,3 +14,9 @@ use edit_distance.py to normalize the miss-typing (typo) text
 use SentimenAnalysis.py to start analyze
 
 ##############################################
+
+UPDATED!
+
+Combine.py is the full code for sentiment analysis
+
+use confusion_matrix to test the method
