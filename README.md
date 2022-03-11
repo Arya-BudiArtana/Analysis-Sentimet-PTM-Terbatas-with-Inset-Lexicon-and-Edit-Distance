@@ -23,3 +23,11 @@ use confusion_matrix to test the method
 
 RESULT
 
+Polarity Scores:
+![sebaranDataBaru](https://user-images.githubusercontent.com/71994688/157987394-ce463fcd-a8de-49e5-8946-a4c8f10c7fb5.jpeg)
+
+Sentiment:
+
+
+
+Confusion Matrix:
