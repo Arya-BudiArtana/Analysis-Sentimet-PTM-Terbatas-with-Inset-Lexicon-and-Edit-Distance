@@ -20,3 +20,6 @@ UPDATED!
 Combine.py is the full code for sentiment analysis
 
 use confusion_matrix to test the method
+
+RESULT
+
