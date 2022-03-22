@@ -1,27 +1,13 @@
 # Importing the required libraries
 from matplotlib import pyplot as plt
 import numpy as np
-import pandas as pd
+import pandas
 
-# Preparing the data to plot
-sentiment = ['Positif', 'Netral', 'Negatif'] 
-count = [543, 40, 417]
+tweetDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test4.1.csv')
+result = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-test4.1.csv')
+final_result = pandas.DataFrame([])
 
-
-# Set colors to the bars using colormaps available in matplotlib
-
-plt.figure(figsize=[15, 7])
-col_map = plt.get_cmap('Paired')
-
-# Creating a bar chart with bars of different color using colormap
-pl=plt.bar(sentiment, count, width=0.2, color=col_map.colors, edgecolor='k', 
-        linewidth=2)
-    
-for bar in pl:
-    plt.annotate(bar.get_height(), 
-                 xy=(bar.get_x()+0.07, bar.get_height()+10), 
-                     fontsize=15)
-plt.title('Sentiment', fontsize=15)
-plt.xlabel('Sentiment', fontsize=15)
-plt.ylabel('Count', fontsize=15)
-plt.show()
+final_result['original_tweet'] = tweetDataset['original_tweet'].copy()
+final_result['sentiment']  = result['sentiment_result'].copy()
+final_result.head(10)
+final_result.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/sentimentAnalysis-result-ptm-final-stem-2.csv")

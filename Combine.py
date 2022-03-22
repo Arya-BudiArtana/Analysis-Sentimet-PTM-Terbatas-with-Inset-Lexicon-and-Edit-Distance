@@ -12,6 +12,8 @@ from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from nltk.corpus import stopwords
 import time
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+import swifter
 
 time1 = time.perf_counter()
 TWEET_DATA = pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test.csv")
@@ -48,7 +50,6 @@ def remove_punctuation(text):
     return text.translate(str.maketrans("","",string.punctuation))
 
 TWEET_DATA['tweet'] = TWEET_DATA['tweet'].apply(remove_punctuation)
-
 
 
 #remove whitespace leading & trailing
@@ -105,6 +106,7 @@ def stopwords_removal(words):
 
 TWEET_DATA['tweet'] = TWEET_DATA['tweet'].apply(stopwords_removal)
 
+
 #proses normalisasi singkatan
 normalizad_word = pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/cleaning_source/singkatan.csv")
 
@@ -119,6 +121,38 @@ def normalized_term(document):
 
 TWEET_DATA['tweet'] = TWEET_DATA['tweet'].apply(normalized_term)
 
+# create stemmer
+factory = StemmerFactory()
+stemmer = factory.create_stemmer()
+
+# # stemmed
+# def stemmed_wrapper(term):
+#     return stemmer.stem(term)
+
+# term_dict = {}
+
+# for document in TWEET_DATA['tweet']:
+#     for term in document:
+#         if term not in term_dict:
+#             term_dict[term] = ' '
+            
+# print(len(term_dict))
+# print("------------------------")
+
+# for term in term_dict:
+#     term_dict[term] = stemmed_wrapper(term)
+#     print(term,":" ,term_dict[term])
+    
+# print(term_dict)
+# print("------------------------")
+
+
+# apply stemmed term to dataframe
+# def get_stemmed_term(document):
+#     return [term_dict[term] for term in document]
+
+# TWEET_DATA['tweet'] = TWEET_DATA['tweet'].swifter.apply(get_stemmed_term)
+
 TWEET_DATA['tweet'].head(10)
 TWEET_DATA['tweet'] = (
     TWEET_DATA['tweet'] 
@@ -129,7 +163,7 @@ TWEET_DATA['tweet'] = (
 
 print(TWEET_DATA['tweet'].head())
 
-TWEET_DATA.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test1.csv")
+TWEET_DATA.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test4.csv")
 
 #*********************Levenshtein Distance Algorithm************************
 for dirname, _, filenames in os.walk('D:/Kuliah/KRISPI/py/Analisis'):
@@ -171,10 +205,10 @@ for dirname, _, filenames in os.walk('D:/Kuliah/KRISPI/py/Analisis'):
                 splittedsentence[i] = word
         return ' '.join(splittedsentence)
 # save yo csv
-df = pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test1.csv")
+df = pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test4.csv")
 df.dropna(axis=1, how='all')
 df['tweet'] = df['tweet'].apply(spelling_correction)
-df.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test2.csv")
+df.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test4.1.csv")
 
 
 # sentiment analysis with inset lexicon
@@ -189,10 +223,12 @@ import operator
 from nltk.corpus import stopwords
 import concurrent.futures
 from wordcloud import WordCloud
+# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 sentimentDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetAnalysis/lexicon-word-dataset.csv')
 negasi = ["tidak", "tidaklah", "bukan", "bukanlah", "bukannya","ngga", "nggak", "enggak", "nggaknya", 
     "kagak", "gak", "ga"]
+# stemmer = StemmerFactory().create_stemmer()
 list_stopwords = ["yang", "dengan", "kan", "nya", 'juga', 'ke', 'bikin', 'bilang', 'ingin', 'bisa','gimana', 'harus',
                 'nya', 'nih', 'sih', 'kakak', 'terus', 'juga', 'demi', 'lah', 'luar', 'waktu', 'terus', 'pun', 'kenapa',
                 'si', 'tuh', 'untuk', 'n', 'tt', 'daripada', 'mana', 'tuh', 'siapa', 'tadi', 'pak', 'tanpa', 'atau', 'di',
@@ -249,6 +285,7 @@ def sentimentCSV(fileName:str) -> csv:
         writer.writeheader()
         with concurrent.futures.ThreadPoolExecutor() as executor:
             executor.map(writer.writerow, sentimentProcess(tweetDataset['tweet']))
+
 time2 = time.perf_counter()
 print(f"waktu : {time2-time1}")
 def sentimentPlotSingleFile(fileName:str) -> plt:
@@ -258,31 +295,21 @@ def sentimentPlotSingleFile(fileName:str) -> plt:
     plt.xlabel('sentiment')
     plt.show()
 
-def sentimentWordCloud(fileName:str) -> plt:
-    datasetResult = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-{}.csv'.format(fileName))
-    wordcloud = WordCloud(width = 800, height = 800, background_color = 'black', max_words = 1000
-                      , min_font_size = 20).generate(str(datasetResult['clean_tweet']))
-    plt.figure(figsize = (8,8), facecolor = None)
-    plt.imshow(wordcloud)
-    plt.axis('off')
-    plt.show()
-
 if __name__ == "__main__":
     # nama file untuk hasil sentiment analysis    
 
-    sentimentCSV("test2")
+    sentimentCSV("test4.1")
     print(findWeightSentiment.cache_info())
 
     # grafik untuk distribusi sentiment
-    sentimentPlotSingleFile("test2")
-    sentimentWordCloud("test2")
+    sentimentPlotSingleFile("test4.1")
 
 # save the final result to the csv format
-tweetDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test2.csv')
-result = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-test2.csv')
+tweetDataset = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm-test4.1.csv')
+result = pandas.read_csv('D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/sentimentAnalysis-result-ptm-test4.1.csv')
 final_result = pandas.DataFrame([])
 
 final_result['original_tweet'] = tweetDataset['original_tweet'].copy()
 final_result['sentiment']  = result['sentiment_result'].copy()
 final_result.head(10)
-final_result.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/sentimentAnalysis-result-ptm-final.csv")
+final_result.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/sentimentAnalysis-result-ptm-final-test.csv")

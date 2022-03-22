@@ -89,7 +89,7 @@ def sentimentWordCloud(fileName:str) -> plt:
 if __name__ == "__main__":
     # nama file untuk hasil sentiment analysis    
     time1 = time.perf_counter()
-    sentimentCSV("full")
+    sentimentCSV("test4.1")
     time2 = time.perf_counter()
     print(f"waktu : {time2-time1}")
     print(findWeightSentiment.cache_info())
