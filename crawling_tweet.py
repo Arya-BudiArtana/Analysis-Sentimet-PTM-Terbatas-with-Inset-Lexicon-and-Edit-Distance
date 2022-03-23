@@ -26,7 +26,7 @@ if not os.path.exists('data/data_extraction'):
 ptm_terbatas = "D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm.csv"
 
 #columns of the csv file
-COLS = ['id', 'created_at', 'source', 'original_text','original_tweet', 'lang',
+COLS = ['id', 'created_at', 'source', 'original_text','original_tweet','lang',
         'favorite_count', 'retweet_count', 'original_author', 'possibly_sensitive', 'hashtags',
         'user_mentions', 'place', 'place_coord_boundaries']
 

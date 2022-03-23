@@ -49,22 +49,22 @@ plt.show()
 # CATATAN
 
 # TANPA EDIT DISTANCE
-# recall: 71.94
-# precision: 69.03
-# accuracy: 67.94
-# f1-score: 70.45
+# recall: 71.94%
+# precision: 69.03%
+# accuracy: 67.94%
+# f1-score: 70.45%
 # waktu : 4.195702900000001
 
 # DENGAN STEMMING
-# recall: 70.17
-# precision: 68.44
-# accuracy: 67.18
-# f1-score: 69.29
+# recall: 70.17%
+# precision: 68.44%
+# accuracy: 67.18%
+# f1-score: 69.29%
 # waktu : 2283.6629428
 
 # PAKET KOMPLIT
-# recall: 78.32
-# precision: 73.94
-# accuracy: 74.03
-# f1-score: 76.07
+# recall: 78.32%
+# precision: 73.94%
+# accuracy: 74.03%
+# f1-score: 76.07%
 # waktu : 2082.45279522

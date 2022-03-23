@@ -9,9 +9,7 @@ import seaborn
 import csv
 import pandas as pd
 import string
-import re  # regex library
-
-# import word_tokenize & FreqDist from NLTK
+import re  
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from nltk.corpus import stopwords
@@ -251,8 +249,6 @@ df.to_csv(
 
 
 # sentiment analysis with inset lexicon
-# from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
-
 sentimentDataset = pd.read_csv(
     'D:/Kuliah/KRISPI/py/Analisis/data/datasetAnalysis/lexicon-word-dataset.csv')
 negasi = ["tidak", "tidaklah", "bukan", "bukanlah", "bukannya", "ngga", "nggak", "enggak", "nggaknya",
