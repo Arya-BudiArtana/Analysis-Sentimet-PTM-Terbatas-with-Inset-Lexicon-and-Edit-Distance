@@ -50,4 +50,4 @@ for dirname, _, filenames in os.walk('D:/Kuliah/KRISPI/py/Analisis'):
 # print('\n\n\n')
 # df.to_csv("D:/Kuliah/KRISPI/py/Analisis/data/data_extraction/tweet_dataset_edited2.csv")
 
-print(spelling_correction("mles"))
+print(spelling_correction("lumayn"))

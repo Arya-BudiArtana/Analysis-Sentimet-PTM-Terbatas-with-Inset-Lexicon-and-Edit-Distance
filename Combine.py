@@ -30,8 +30,6 @@ print(TWEET_DATA['tweet'].head(5))
 print('\n\n\n')
 
 # ------ Cleansing ---------
-
-
 def remove_tweet_special(text):
     # remove tab, new line, ans back slice
     text = text.replace('\\t', " ").replace(

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 
 start_time = time.perf_counter()
-data=pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/testing5.csv")
+data=pd.read_csv("D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/final_result/sentimentAnalysis-result-ptm-final-test.csv")
 data.head(20)
 
 data.shape
