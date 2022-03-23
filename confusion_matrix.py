@@ -17,16 +17,16 @@ print(results)
 tn, fp, fn, tp = results.ravel()
 
 recall = tp / (tp + fn) * 100
-print(f'recall: {recall:0.2f}')
+print(f'recall: {recall:0.2f}%')
 
 precision = tp / (tp + fp) * 100
-print(f'precision: {precision:0.2f}')
+print(f'precision: {precision:0.2f}%')
 
 accuracy=(tp+tn)/(tp+tn+fp+fn) * 100
-print(f'accuracy: {accuracy:0.2f}')
+print(f'accuracy: {accuracy:0.2f}%')
 
 f1_score = 2*((recall*precision)/(recall+precision))
-print(f'f1-score: {f1_score:0.2f}')
+print(f'f1-score: {f1_score:0.2f}%')
 end_time = time.perf_counter()
 print(f"{end_time - start_time:0.4f} seconds")
 

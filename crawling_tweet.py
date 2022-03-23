@@ -23,10 +23,10 @@ if not os.path.exists('data'):
 if not os.path.exists('data/data_extraction'):
     os.mkdir('data/data_extraction')
 
-ptm_terbatas = "D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset.csv"
+ptm_terbatas = "D:/Kuliah/KRISPI/py/Analisis/data/datasetSource/tweet-dataset-ptm.csv"
 
 #columns of the csv file
-COLS = ['id', 'created_at', 'source', 'original_tweet',  'lang',
+COLS = ['id', 'created_at', 'source', 'original_text','original_tweet', 'lang',
         'favorite_count', 'retweet_count', 'original_author', 'possibly_sensitive', 'hashtags',
         'user_mentions', 'place', 'place_coord_boundaries']
 
@@ -54,10 +54,11 @@ def write_tweets(keyword, file):
                     df.at[i, 'retweet_count'] = status['retweet_count']
                 continue
                 
+            filtered_tweet= status['full_text']
            
             #new entry append
             new_entry += [status['id'], status['created_at'],
-                          status['source'], status['full_text'],  status['lang'],
+                          status['source'], status['full_text'],filtered_tweet,  status['lang'],
                           status['favorite_count'], status['retweet_count']]
 
             #to append original author of the tweet
